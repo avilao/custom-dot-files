@@ -1,0 +1,53 @@
+[user]
+	email = alexandre.vilao@gmail.com
+
+	name = Alexandre Vilao
+
+	# Forces name and email to be set.
+	useconfigonly = true
+
+[color]
+	ui = auto
+
+[alias]
+	# List aliases
+	aliases = "!f() { git config --get-regexp 'alias.*' | colrm 1 6 | sed 's/[ ]/ = /' | sort; }; f"
+
+	# List remote branches ordered by the last time they were updated
+	rbranches = "!f() { for branch in `git branch -r | grep -v HEAD`;do echo -e `git show --format='%ci %cr' $branch | head -n 1` \\t$branch; done | sort -r; }; f"
+
+	# Interactive rebase up to the nth commit
+	reb = "!f() { echo 'Stashing unstaged changes'; git stash; git rebase -i HEAD~$1; }; f"
+
+	# List all my commits ordered by date
+	recap = !git log --all --no-merges --author=${1-$(git config user.email)} --pretty=format:'%h %ad %s' --date=short
+
+	# List people ordered by commits count
+	stats = shortlog -sn --all --no-merges
+
+	# List my commits created today
+	today = !git log --all --since=00:00:00 --oneline --no-merges --author=${1-$(git config user.email)}
+
+	# Show last stash if no argument is given, otherwise show nth stash
+	vstash = "!f() { stash=${1-0}; git stash show -p stash@{$stash}; }; f"
+
+	# List where and when HEAD has been
+	watwork = reflog show --date=format:'%Y-%m-%d %H:%M'
+	amend = commit --amend
+
+	co = checkout
+
+	cont = rebase --continue
+
+	del = branch -d
+
+	rdel = push --delete origin
+
+	pa = add --patch
+
+	st = status
+
+[pull]
+	# Avoid merges when pulling
+	rebase = true
+
